@@ -16,8 +16,8 @@ from reportlab.lib.units import cm, mm
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import (
-    Image, PageBreak, Paragraph, Preformatted, SimpleDocTemplate, Spacer, Table,
-    TableStyle,
+    BaseDocTemplate, Frame, Image, PageBreak, PageTemplate, Paragraph, Preformatted,
+    Spacer, Table, TableStyle,
 )
 from reportlab.platypus.tableofcontents import TableOfContents
 
@@ -93,8 +93,22 @@ def build_styles():
 # --------------------------------------------------------------------------- #
 # Шаблон документа с поддержкой содержания и нумерации страниц
 # --------------------------------------------------------------------------- #
-class ReportDoc(SimpleDocTemplate):
-    """Документ, регистрирующий заголовки в оглавлении (TableOfContents)."""
+class ReportDoc(BaseDocTemplate):
+    """Документ с точными полями по ГОСТ и регистрацией заголовков в оглавлении.
+
+    Используется собственный Frame с нулевыми внутренними отступами (padding=0),
+    иначе reportlab добавляет 6 пт с каждой стороны и поля получаются больше нормы.
+    """
+
+    def __init__(self, filename, **kwargs):
+        super().__init__(filename, **kwargs)
+        frame = Frame(
+            self.leftMargin, self.bottomMargin, self.width, self.height,
+            leftPadding=0, rightPadding=0, topPadding=0, bottomPadding=0, id="normal",
+        )
+        self.addPageTemplates([
+            PageTemplate(id="main", frames=[frame], onPage=draw_page_number),
+        ])
 
     def afterFlowable(self, flowable):
         if isinstance(flowable, Paragraph):
@@ -461,7 +475,7 @@ def build():
     story += section_inspection(styles)
     story += section_conclusion(styles)
     story += section_install(styles)
-    doc.multiBuild(story, onFirstPage=draw_page_number, onLaterPages=draw_page_number)
+    doc.multiBuild(story)
     print(f"Создано: {output}")
 
 

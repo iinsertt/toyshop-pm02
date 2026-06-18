@@ -13,12 +13,8 @@ from src.common.models import Product
 
 logger = get_logger(__name__)
 
-# Путь к JSON-каталогу по умолчанию: <корень>/src/data/products.json
-DEFAULT_CATALOG_PATH = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "data",
-    "products.json",
-)
+# Путь к JSON-каталогу по умолчанию.
+DEFAULT_CATALOG_PATH = os.path.join("data", "products.json")
 
 
 class Catalog:

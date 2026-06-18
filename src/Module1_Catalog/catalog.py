@@ -77,9 +77,9 @@ class Catalog:
         :param query: искомая подстрока.
         :return: список подходящих товаров (может быть пустым).
         """
-        n = query.strip().lower()
+        normalized = query.strip().lower()
         # Проходим по всему списку загруженных товаров и сравниваем искомую подстроку с названием каждого товара в нижнем регистре, после чего возвращаем все совпадения
-        return [p for p in self.products if n in p.name.lower()]
+        return [p for p in self.products if normalized in p.name.lower()]
 
     def filter_products(
         self,

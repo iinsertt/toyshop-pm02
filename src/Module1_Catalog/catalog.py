@@ -67,7 +67,6 @@ class Catalog:
             raise CatalogLoadError(f"Неверный формат каталога: {error}") from error
 
     def get_all(self) -> List[Product]:
-        """Вернуть все загруженные товары."""
         return list(self.products)
 
     def search_by_name(self, query: str) -> List[Product]:
@@ -78,8 +77,9 @@ class Catalog:
         :param query: искомая подстрока.
         :return: список подходящих товаров (может быть пустым).
         """
-        normalized = query.strip().lower()
-        return [p for p in self.products if normalized in p.name.lower()]
+        n = query.strip().lower()
+        # Проходим по всему списку загруженных товаров и сравниваем искомую подстроку с названием каждого товара в нижнем регистре, после чего возвращаем все совпадения
+        return [p for p in self.products if n in p.name.lower()]
 
     def filter_products(
         self,

@@ -128,7 +128,7 @@ def build_document():
         "товарами и обрабатывать поступившие заказы.",
     )
     add_body(document, "В магазине представлены товары четырёх категорий:")
-    for item in ("конструкторы;", "куклы;", "машинки;", "настольные игры."):
+    for item in ("Конструкторы;", "Куклы;", "Машинки;", "Настольные игры."):
         add_bullet(document, item)
     add_body(document, "В системе предусмотрены две роли пользователей:")
     add_bullet(document, "Покупатель — просматривает каталог, ищет и фильтрует товары, "
@@ -203,7 +203,7 @@ def build_document():
                        "и изменяет каталог товаров.")
     add_body(document, "Диаграмма компонентов системы приведена на рисунке 1.")
     add_image(document, "component_diagram.png")
-    caption1 = document.add_paragraph("Рисунок 1 — Диаграмма компонентов системы")
+    caption1 = document.add_paragraph("Рисунок 1 — UML-диаграмма компонентов системы")
     caption1.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
     # Раздел 5
@@ -211,7 +211,7 @@ def build_document():
     add_body(document, "В системе выделены два актёра — Покупатель и Администратор. "
                        "Диаграмма вариантов использования приведена на рисунке 2.")
     add_image(document, "use_case_diagram.png")
-    caption2 = document.add_paragraph("Рисунок 2 — Диаграмма вариантов использования")
+    caption2 = document.add_paragraph("Рисунок 2 — UML-диаграмма вариантов использования")
     caption2.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
     add_heading(document, "5.1 Основные и альтернативные сценарии", level=2)

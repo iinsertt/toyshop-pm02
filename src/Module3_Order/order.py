@@ -31,6 +31,10 @@ EMAIL_PATTERN = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 # Обязательные поля покупателя.
 REQUIRED_FIELDS = ("surname", "name", "address", "phone", "email")
 
+# Список столбцов таблицы orders в порядке, ожидаемом методом _row_to_order.
+# Вынесён в константу, чтобы не дублировать его в нескольких SQL-запросах.
+ORDER_COLUMNS = "order_number, surname, name, address, phone, email, total, status, created_at"
+
 
 class OrderService:
     """Сервис оформления заказов с хранением в SQLite."""
@@ -163,8 +167,7 @@ class OrderService:
         :return: объект :class:`Order` или ``None``, если заказ не найден.
         """
         cursor = self.connection.execute(
-            "SELECT order_number, surname, name, address, phone, email, total, "
-            "status, created_at FROM orders WHERE order_number = ?",
+            f"SELECT {ORDER_COLUMNS} FROM orders WHERE order_number = ?",
             (order_number,),
         )
         row = cursor.fetchone()
@@ -175,8 +178,7 @@ class OrderService:
     def list_orders(self) -> List[Order]:
         """Вернуть список всех заказов из базы (для админ-панели)."""
         cursor = self.connection.execute(
-            "SELECT order_number, surname, name, address, phone, email, total, "
-            "status, created_at FROM orders ORDER BY created_at"
+            f"SELECT {ORDER_COLUMNS} FROM orders ORDER BY created_at"
         )
         return [self._row_to_order(row) for row in cursor.fetchall()]
 

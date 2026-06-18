@@ -1,0 +1,45 @@
+{
+  "storeName": "ToyShop",
+  "categories": [
+    {
+      "id": "cat_01",
+      "name": "Конструкторы",
+      "products": [
+        { "id": "pr_001", "name": "LEGO City Пожарная станция", "price": 4999.0, "stock": 12, "description": "540 деталей, для детей от 6 лет" },
+        { "id": "pr_002", "name": "LEGO Technic Гоночный автомобиль", "price": 6499.0, "stock": 8, "description": "Подвижные элементы, от 9 лет" },
+        { "id": "pr_003", "name": "Магнитный конструктор Magformers", "price": 3299.0, "stock": 15, "description": "62 магнитные детали" },
+        { "id": "pr_004", "name": "Деревянный конструктор Городок", "price": 1499.0, "stock": 20, "description": "Экологичный, 100 деталей" }
+      ]
+    },
+    {
+      "id": "cat_02",
+      "name": "Куклы",
+      "products": [
+        { "id": "pr_005", "name": "Кукла Barbie Дримтопия", "price": 2199.0, "stock": 18, "description": "С аксессуарами и нарядом" },
+        { "id": "pr_006", "name": "Кукла LOL Surprise", "price": 1899.0, "stock": 25, "description": "Сюрприз в шаре, 7 слоёв" },
+        { "id": "pr_007", "name": "Пупс Baby Born интерактивный", "price": 3499.0, "stock": 10, "description": "Пьёт, плачет, закрывает глаза" },
+        { "id": "pr_008", "name": "Кукла Рапунцель Disney", "price": 2599.0, "stock": 14, "description": "Поющая, 30 см" }
+      ]
+    },
+    {
+      "id": "cat_03",
+      "name": "Машинки",
+      "products": [
+        { "id": "pr_009", "name": "Радиоуправляемая машина Monster Truck", "price": 3999.0, "stock": 9, "description": "Полный привод, дальность 30 м" },
+        { "id": "pr_010", "name": "Гоночный трек Hot Wheels", "price": 2799.0, "stock": 16, "description": "С петлёй и двумя машинками" },
+        { "id": "pr_011", "name": "Машинка инерционная Самосвал", "price": 899.0, "stock": 30, "description": "Прочный пластик, от 3 лет" },
+        { "id": "pr_012", "name": "Металлическая модель Спорткар 1:24", "price": 1299.0, "stock": 22, "description": "Коллекционная, открываются двери" }
+      ]
+    },
+    {
+      "id": "cat_04",
+      "name": "Настольные игры",
+      "products": [
+        { "id": "pr_013", "name": "Монополия классическая", "price": 2499.0, "stock": 13, "description": "Для 2-8 игроков, от 8 лет" },
+        { "id": "pr_014", "name": "Дженга башня", "price": 1199.0, "stock": 27, "description": "54 деревянных бруска" },
+        { "id": "pr_015", "name": "Каркассон", "price": 2999.0, "stock": 11, "description": "Стратегия, базовый набор" },
+        { "id": "pr_016", "name": "Активити для всей семьи", "price": 1799.0, "stock": 17, "description": "Объясняй, показывай, рисуй" }
+      ]
+    }
+  ]
+}

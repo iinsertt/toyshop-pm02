@@ -67,6 +67,7 @@ class Catalog:
             raise CatalogLoadError(f"Неверный формат каталога: {error}") from error
 
     def get_all(self) -> List[Product]:
+        """Вернуть все загруженные товары."""
         return list(self.products)
 
     def search_by_name(self, query: str) -> List[Product]:

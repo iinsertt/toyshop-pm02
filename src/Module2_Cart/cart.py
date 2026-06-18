@@ -80,7 +80,7 @@ class Cart:
 
     def total(self) -> float:
         """Рассчитать общую сумму заказа (сумма стоимости всех позиций)."""
-        return sum(item.product.price for item in self.items)
+        return sum(item.subtotal for item in self.items)
 
     def clear(self) -> None:
         """Очистить корзину."""

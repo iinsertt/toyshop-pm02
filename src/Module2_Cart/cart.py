@@ -3,7 +3,7 @@
 Хранит выбранные покупателем товары в памяти сессии, позволяет добавлять,
 удалять и изменять количество, рассчитывает общую сумму.
 """
-from typing import List
+from typing import List, Optional
 
 from src.common.exceptions import ProductNotFoundError
 from src.common.logger import get_logger
@@ -19,7 +19,7 @@ class Cart:
         """Создать пустую корзину."""
         self.items: List[CartItem] = []
 
-    def _find_item(self, product_id: str) -> CartItem:
+    def _find_item(self, product_id: str) -> Optional[CartItem]:
         """Найти позицию корзины по идентификатору товара или вернуть None."""
         for item in self.items:
             if item.product.id == product_id:

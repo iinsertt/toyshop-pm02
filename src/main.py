@@ -69,7 +69,7 @@ def print_products(products) -> None:
         return
     for product in products:
         print(
-            f"  [{product.id}] {product.name} — {product.price:.2f} ₽ "
+            f"  [{product.id}] {product.name} — {product.price:.2f} руб. "
             f"| {product.category} | на складе: {product.stock}"
         )
         print(f"        {product.description}")
@@ -165,9 +165,9 @@ def show_cart(cart: Cart) -> None:
     for item in items:
         print(
             f"  [{item.product.id}] {item.product.name} — "
-            f"{item.product.price:.2f} ₽ x {item.quantity} = {item.subtotal:.2f} ₽"
+            f"{item.product.price:.2f} руб. x {item.quantity} = {item.subtotal:.2f} руб."
         )
-    print(f"  ИТОГО: {cart.total():.2f} ₽")
+    print(f"  ИТОГО: {cart.total():.2f} руб.")
 
 
 # ---------------------------------------------------------------------------- #
@@ -192,10 +192,7 @@ def checkout_menu(cart: Cart, order_service: OrderService) -> None:
         customer = order_service.validate_customer(data)
         order = order_service.save_order(customer, items, cart.total())
         cart.clear()
-        print("\n✓ Заказ успешно оформлен!")
-        print(f"  Номер заказа: {order.order_number}")
-        print(f"  Сумма: {order.total:.2f} ₽")
-        print(f"  Статус: {order.status}")
+        print("\n[OK] " + order_service.confirm(order))
     except ValidationError as error:
         print(f"Ошибка в данных: {error}")
     except ToyShopError as error:
@@ -277,7 +274,7 @@ def list_orders(admin: Admin) -> None:
     for order in orders:
         print(
             f"  {order.order_number} | {order.customer.surname} {order.customer.name} "
-            f"| {order.total:.2f} ₽ | {order.status} | {order.created_at}"
+            f"| {order.total:.2f} руб. | {order.status} | {order.created_at}"
         )
 
 
@@ -299,37 +296,41 @@ def main() -> None:
     order_service = OrderService()
     admin = Admin(catalog, order_service)
 
-    while True:
-        print("\n==============================")
-        print("   ToyShop — магазин игрушек")
-        print("==============================")
-        print("1. Каталог товаров")
-        print("2. Корзина")
-        print("3. Оформить заказ")
-        print("4. Админ-панель")
-        print("0. Выход")
-        choice = ask("Выберите раздел: ")
-        try:
-            if choice == "1":
-                catalog_menu(catalog)
-            elif choice == "2":
-                cart_menu(catalog, cart)
-            elif choice == "3":
-                checkout_menu(cart, order_service)
-            elif choice == "4":
-                admin_menu(admin)
-            elif choice == "0":
-                print("До свидания!")
-                logger.info("Завершение работы приложения")
-                return
-            else:
-                print("Неизвестный пункт меню.")
-        except ToyShopError as error:
-            print(f"Произошла ошибка: {error}")
-            logger.error("Обработанная ошибка в меню", exc_info=True)
-        except Exception as error:  # noqa: BLE001 - логируем любые непредвиденные ошибки
-            print(f"Непредвиденная ошибка: {error}")
-            logger.error("Непредвиденная ошибка", exc_info=True)
+    try:
+        while True:
+            print("\n==============================")
+            print("   ToyShop — магазин игрушек")
+            print("==============================")
+            print("1. Каталог товаров")
+            print("2. Корзина")
+            print("3. Оформить заказ")
+            print("4. Админ-панель")
+            print("0. Выход")
+            choice = ask("Выберите раздел: ")
+            try:
+                if choice == "1":
+                    catalog_menu(catalog)
+                elif choice == "2":
+                    cart_menu(catalog, cart)
+                elif choice == "3":
+                    checkout_menu(cart, order_service)
+                elif choice == "4":
+                    admin_menu(admin)
+                elif choice == "0":
+                    print("До свидания!")
+                    logger.info("Завершение работы приложения")
+                    return
+                else:
+                    print("Неизвестный пункт меню.")
+            except ToyShopError as error:
+                print(f"Произошла ошибка: {error}")
+                logger.error("Обработанная ошибка в меню", exc_info=True)
+            except Exception as error:  # noqa: BLE001 - логируем любые непредвиденные ошибки
+                print(f"Непредвиденная ошибка: {error}")
+                logger.error("Непредвиденная ошибка", exc_info=True)
+    finally:
+        # Гарантированно закрываем соединение с базой данных при выходе.
+        order_service.close()
 
 
 if __name__ == "__main__":

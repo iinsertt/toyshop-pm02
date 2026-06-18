@@ -73,6 +73,14 @@ class Admin:
                     continue
         return f"pr_{max_number + 1:03d}"
 
+    @staticmethod
+    def _to_number(value, caster, field_name):
+        """Привести значение к числовому типу или возбудить ValidationError."""
+        try:
+            return caster(value)
+        except (TypeError, ValueError):
+            raise ValidationError(f"Неверное значение поля «{field_name}»: {value}")
+
     def add_product(
         self, category: str, name: str, price: float, stock: int, description: str
     ) -> Product:
@@ -115,8 +123,13 @@ class Admin:
             for product in category["products"]:
                 if product["id"] == product_id:
                     for key, value in fields.items():
-                        if key in allowed:
-                            product[key] = value
+                        if key not in allowed:
+                            continue
+                        if key == "price":
+                            value = self._to_number(value, float, "цена")
+                        elif key == "stock":
+                            value = self._to_number(value, int, "остаток")
+                        product[key] = value
                     self._write_catalog_data(data)
                     logger.info("Товар %s отредактирован: %s", product_id, fields)
                     return

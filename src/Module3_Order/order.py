@@ -105,12 +105,21 @@ class OrderService:
         )
 
     def generate_order_number(self) -> str:
-        """Сгенерировать уникальный номер заказа формата ``ORD-YYYYMMDD-NNNN``."""
-        cursor = self.connection.execute("SELECT COUNT(*) FROM orders")
-        count = cursor.fetchone()[0]
-        sequence = count + 1
+        """Сгенерировать уникальный номер заказа формата ``ORD-YYYYMMDD-NNNN``.
+
+        Номер гарантированно уникален: если вычисленный номер уже занят
+        (например, после удаления заказов), счётчик увеличивается до свободного.
+        """
         date_part = datetime.now().strftime("%Y%m%d")
-        return f"ORD-{date_part}-{sequence:04d}"
+        cursor = self.connection.execute("SELECT COUNT(*) FROM orders")
+        sequence = cursor.fetchone()[0] + 1
+        order_number = f"ORD-{date_part}-{sequence:04d}"
+        while self.connection.execute(
+            "SELECT 1 FROM orders WHERE order_number = ?", (order_number,)
+        ).fetchone():
+            sequence += 1
+            order_number = f"ORD-{date_part}-{sequence:04d}"
+        return order_number
 
     def save_order(self, customer: Customer, items: List[CartItem], total: float) -> Order:
         """Сохранить заказ в базу данных.
@@ -160,6 +169,19 @@ class OrderService:
             raise OrderSaveError(f"Не удалось сохранить заказ: {error}") from error
 
         return Order(order_number, customer, list(items), total, status, created_at)
+
+    def confirm(self, order: Order) -> str:
+        """Сформировать текст подтверждения заказа для вывода покупателю."""
+        return (
+            "Заказ успешно оформлен!\n"
+            f"  Номер заказа: {order.order_number}\n"
+            f"  Сумма: {order.total:.2f} руб.\n"
+            f"  Статус: {order.status}"
+        )
+
+    def close(self) -> None:
+        """Закрыть соединение с базой данных."""
+        self.connection.close()
 
     def get_order(self, order_number: str) -> Optional[Order]:
         """Прочитать заказ из базы по номеру.

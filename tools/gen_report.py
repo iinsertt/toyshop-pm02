@@ -353,6 +353,21 @@ def section_development(styles):
         "2026-06-18 14:17:25 | INFO | Заказ ORD-20260618-0001 сохранён в БД, сумма 9998.00\n"
     )
     story.append(code_block(styles, log))
+    story.append(h2(styles, "4.4 Демонстрация инструментов отладки"))
+    story.append(body(styles, "Отладка выполнялась в среде Visual Studio Code с "
+        "использованием конфигурации .vscode/launch.json. На рисунке 7 показана "
+        "остановка программы на точке останова: одновременно видны точка останова "
+        "(красная отметка слева от строки), панель Variables с текущими значениями "
+        "переменных и панель Call Stack с цепочкой вызовов checkout_menu → main."))
+    story.append(image("debug_1.jpg"))
+    story.append(Paragraph("Рисунок 7 — Остановка на точке останова (Variables, Call Stack)",
+        styles["GostCaption"]))
+    story.append(body(styles, "На рисунке 8 показано пошаговое выполнение: после нажатия "
+        "F11 (Step Into) отладчик вошёл внутрь метода validate_customer, а стек вызовов "
+        "углубился до validate_customer → checkout_menu → main."))
+    story.append(image("debug_2.jpg"))
+    story.append(Paragraph("Рисунок 8 — Пошаговое выполнение (Step Into)",
+        styles["GostCaption"]))
     return story
 
 
@@ -377,9 +392,9 @@ def section_testing(styles):
         "Каждое исправление зафиксировано отдельным коммитом."))
     bugs = [
         ["Ошибка", "Как обнаружена", "Исправление", "Коммит"],
-        ["Неверный путь к JSON", "Тест, лог ERROR", "Абсолютный путь через os.path", "6d8c576"],
-        ["Сумма без количества", "Юнит-тест корзины", "Использование item.subtotal", "bad8c1c"],
-        ["Пропуск проверки телефона", "Юнит-тест заказа", "Восстановлена проверка regex", "1cb3cf7"],
+        ["Неверный путь к JSON", "Тест, лог ERROR", "Абсолютный путь через os.path", "c8c48ee"],
+        ["Сумма без количества", "Юнит-тест корзины", "Использование item.subtotal", "b05c759"],
+        ["Пропуск проверки телефона", "Юнит-тест заказа", "Восстановлена проверка regex", "4d37725"],
     ]
     story.append(make_table(bugs, [4 * cm, 4 * cm, 4.5 * cm, 2.5 * cm]))
     story.append(Paragraph("Таблица 2 — Найденные и исправленные ошибки", styles["GostCaption"]))
@@ -393,11 +408,11 @@ def section_inspection(styles):
         "оформлено отдельным коммитом."))
     data = [
         ["Нарушение", "Файл", "Исправление", "Коммит"],
-        ["Однобуквенное имя", "catalog.py", "Имя normalized", "f2b90c6"],
-        ["Строка > 120 символов", "catalog.py", "Разбита на строки", "bac2120"],
-        ["Нет docstring", "catalog.py", "Добавлен docstring", "abe9085"],
-        ["Магическое число", "main.py", "Константа MAX_PRICE_DEFAULT", "601d9a0"],
-        ["Дублирование кода", "order.py", "Константа ORDER_COLUMNS", "161c961"],
+        ["Однобуквенное имя", "catalog.py", "Имя normalized", "4170a9b"],
+        ["Строка > 120 символов", "catalog.py", "Разбита на строки", "49c3753"],
+        ["Нет docstring", "catalog.py", "Добавлен docstring", "57a0a79"],
+        ["Магическое число", "main.py", "Константа MAX_PRICE_DEFAULT", "daac6dc"],
+        ["Дублирование кода", "order.py", "Константа ORDER_COLUMNS", "4d597e5"],
     ]
     story.append(make_table(data, [4 * cm, 3 * cm, 5 * cm, 2.5 * cm]))
     story.append(Paragraph("Таблица 3 — Нарушения и исправления", styles["GostCaption"]))

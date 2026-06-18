@@ -36,6 +36,9 @@ from src.common.logger import get_logger  # noqa: E402
 
 logger = get_logger(__name__)
 
+# Значение «максимальной цены» по умолчанию для фильтра (верхняя граница).
+MAX_PRICE_DEFAULT = 1_000_000
+
 
 def ask(prompt_text: str = "") -> str:
     """Прочитать строку ввода пользователя.
@@ -96,7 +99,7 @@ def catalog_menu(catalog: Catalog) -> None:
             print_products(catalog.filter_products(category=category))
         elif choice == "4":
             min_price = ask_int("Минимальная цена: ", 0)
-            max_price = ask_int("Максимальная цена: ", 1000000)
+            max_price = ask_int("Максимальная цена: ", MAX_PRICE_DEFAULT)
             print_products(catalog.filter_products(min_price=min_price, max_price=max_price))
         elif choice == "0":
             return

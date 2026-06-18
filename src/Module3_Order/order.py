@@ -85,6 +85,8 @@ class OrderService:
                 raise ValidationError(f"Поле «{field_name}» не должно быть пустым")
 
         phone = str(data["phone"]).strip()
+        if not PHONE_PATTERN.match(phone):
+            raise ValidationError(f"Неверный формат телефона: {phone}")
 
         email = str(data["email"]).strip()
         if not EMAIL_PATTERN.match(email):
